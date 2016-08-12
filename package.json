@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/jimthedev/tiyo-login#readme",
   "dependencies": {
-    "nightmare": "^2.6.1"
+    "node-horseman": "^3.1.1"
   }
 }
