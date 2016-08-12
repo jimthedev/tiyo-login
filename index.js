@@ -1,27 +1,37 @@
-var Nightmare = require('nightmare');
-var nightmare = Nightmare({ show: false })
+var Horseman = require('node-horseman');
+var horseman = new Horseman({timeout:10000});
+
+var signInPageUrl = 'https://online.theironyard.com/users/sign_in';
 
 module.exports = function login(username, password, callback) {
-  nightmare
-    .goto('https://online.theironyard.com/users/sign_in')
+  horseman
+    .viewport(3200, 1800)
+    .open(signInPageUrl)
     .type('#user_email', username)
     .type('#user_password', password)
     .click('#new_user [type=submit]')
-    .wait('.dashboard, .l-main')
+    .then(function(){
+        return horseman.waitForNextPage();
+    })
+    // .waitForSelector('.dashboard, .l-main')
+    // .screenshot('big.jpg')
     .evaluate(function () {
       var results = {};
       results.admin = document.querySelector('body').classList.contains("admin")
-      results.redirect = window.location.href;
+      results.finalUrl = window.location.href;
       return results;
     })
-    .end()
     .then(function (result) {
+      if(result.finalUrl === signInPageUrl) {
+      }
       var finalResult = Object.assign(result, {
-        username: username
+        username: username,
+        authed: result.finalUrl !== signInPageUrl
       });
       callback(undefined, finalResult);
     })
     .catch(function (error) {
-      callback(err);
-    });
+      callback(error);
+    })
+    .close();
 }

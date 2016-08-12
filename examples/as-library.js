@@ -1,17 +1,11 @@
 var login = require('../index.js');
 
-/*
-  // ERROR
-  login('email@domain.com', 'MY_SWEET_PASSWORD', function(err, result) {
-    if(err) {
-      throw err;
-    }
-    console.log(result);
-  });
-*/
-login('jim.cummins@theironyard.com', 'Jsbjsb03!', function(err, result) {
+login('me@domain.com', 'MY_SWEET_PASSWORD', function(err, result) {
   if(err) {
     throw err;
   }
   console.log(result);
+  // If result.authed is true then the login succeeded
+  // If result.admin is true then they are an instructor
+  // or someone else with access to the admin dashboard
 });
