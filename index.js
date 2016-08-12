@@ -1,5 +1,9 @@
+var phantomjs = require('phantomjs-prebuilt')
 var Horseman = require('node-horseman');
-var horseman = new Horseman({timeout:10000});
+var horseman = new Horseman({
+  phantomPath: phantomjs.path,
+  timeout:10000
+});
 
 var signInPageUrl = 'https://online.theironyard.com/users/sign_in';
 
