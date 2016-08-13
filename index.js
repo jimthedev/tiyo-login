@@ -38,14 +38,16 @@ module.exports = function login(email, password, callback) {
       return results;
     })
     .then(function (result) {
-      if(result.finalUrl === signInPageUrl) {
+      if(result && result.finalUrl !== signInPageUrl) {
+        var finalResult = Object.assign(result, {
+          email: email,
+        });
+        callback(undefined, finalResult);
+      } else if(!result || result.finalUrl === signInPageUrl) {
         callback(new Error('Incorrect login credentials.'));
       }
 
-      var finalResult = Object.assign(result, {
-        email: email,
-      });
-      callback(undefined, finalResult);
+
     })
     .catch(function (error) {
       callback(error);
