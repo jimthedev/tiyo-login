@@ -39,10 +39,11 @@ module.exports = function login(email, password, callback) {
     })
     .then(function (result) {
       if(result.finalUrl === signInPageUrl) {
+        callback(new Error('Incorrect login credentials.'));
       }
+
       var finalResult = Object.assign(result, {
         email: email,
-        authed: result.finalUrl !== signInPageUrl
       });
       callback(undefined, finalResult);
     })
