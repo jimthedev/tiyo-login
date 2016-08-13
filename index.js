@@ -1,5 +1,7 @@
 var phantomjs = require('phantomjs-prebuilt')
 var Horseman = require('node-horseman');
+var isEmail = require('isemail');
+
 var horseman = new Horseman({
   phantomPath: phantomjs.path,
   timeout:10000
@@ -7,11 +9,21 @@ var horseman = new Horseman({
 
 var signInPageUrl = 'https://online.theironyard.com/users/sign_in';
 
-module.exports = function login(username, password, callback) {
+module.exports = function login(email, password, callback) {
+
+  // Ensure email address used
+  if(email && email.length && email.length > 0 && !isEmail.validate(email)) {
+    callback(new Error('Email address required.'));
+  }
+
+  if(password && password.length && password.length < 1) {
+    callback(new Error('Password required.'))
+  }
+
   horseman
     .viewport(3200, 1800)
     .open(signInPageUrl)
-    .type('#user_email', username)
+    .type('#user_email', email)
     .type('#user_password', password)
     .click('#new_user [type=submit]')
     .then(function(){
@@ -29,7 +41,7 @@ module.exports = function login(username, password, callback) {
       if(result.finalUrl === signInPageUrl) {
       }
       var finalResult = Object.assign(result, {
-        username: username,
+        email: email,
         authed: result.finalUrl !== signInPageUrl
       });
       callback(undefined, finalResult);
@@ -37,5 +49,4 @@ module.exports = function login(username, password, callback) {
     .catch(function (error) {
       callback(error);
     })
-    .close();
 }

@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/jimthedev/tiyo-login#readme",
   "dependencies": {
+    "isemail": "^2.2.1",
     "node-horseman": "^3.1.1",
     "phantomjs-prebuilt": "^2.1.12"
   }
